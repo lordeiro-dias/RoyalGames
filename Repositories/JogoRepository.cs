@@ -28,6 +28,7 @@ namespace RoyalGames.Repositories
         public Jogo ObterPorId(int id)
         {
             Jogo? jogo = _context.Jogo.Include(jogoDb => jogoDb.Plataforma).Include(jogoDb => jogoDb.Genero).Include(jogoDb => jogoDb.ClassificacaoIndicativa)
+                .Include(jogoDb => jogoDb.StatusJogo)
                 .FirstOrDefault(jogoDb => jogoDb.JogoID == id);
 
             return jogo;
@@ -59,7 +60,7 @@ namespace RoyalGames.Repositories
             return jogo;
         }
 
-        public void Adicionar(Jogo jogo, List<int> plataformaIds, List<int> generoIds, int statusjogoIds, int classificacaoindIds)
+        public void Adicionar(Jogo jogo, List<int> plataformaIds, List<int> generoIds)
         {
             List<Plataforma> plataformas = _context.Plataforma
                 .Where(plataforma => plataformaIds.Contains(plataforma.PlataformaID))
@@ -72,14 +73,12 @@ namespace RoyalGames.Repositories
                 .ToList();
 
             jogo.Genero = generos;
-            jogo.StatusJogoID = statusjogoIds;
-            jogo.ClassificacaoIndicativaID = classificacaoindIds;
 
             _context.Jogo.Add(jogo);
             _context.SaveChanges();
         }
 
-        public void Atualizar(Jogo jogo, List<int> plataformaIds, List<int> generoIds, int statusjogoIds, int classificacaoindIds)
+        public void Atualizar(Jogo jogo, List<int> plataformaIds, List<int> generoIds)
         {
             Jogo? jogoBanco = _context.Jogo
                 .Include(jogo => jogo.Plataforma)
@@ -92,6 +91,44 @@ namespace RoyalGames.Repositories
             {
                 return;
             }
+
+            jogoBanco.Nome = jogo.Nome;
+            jogoBanco.Preco = jogo.Preco;
+            jogoBanco.Descricao = jogo.Descricao;
+            jogoBanco.ClassificacaoIndicativaID = jogo.ClassificacaoIndicativaID;
+            jogoBanco.StatusJogoID = jogo.StatusJogoID;
+
+            if(jogo.Imagem != null && jogo.Imagem.Length > 0)
+            {
+                jogoBanco.Imagem = jogo.Imagem;
+            }
+
+            // busca todas as categorias no banco com o id igual das categorias que vieram da requisição/front
+            var plataformas = _context.Plataforma
+                .Where(plataforma => plataformaIds.Contains(plataforma.PlataformaID))
+                .ToList();
+            // Clear() -> Remove as ligações atuais entre o produto e as categorias
+            // ele não apaga a categoria do banco, só remove o vínculo com a tabela ProdutoCategoria
+            jogoBanco.Plataforma.Clear();
+
+            foreach(var plataforma in plataformas)
+            {
+                jogoBanco.Plataforma.Add(plataforma);
+            }
+            
+            var generos = _context.Genero
+                .Where(genero => generoIds.Contains(genero.GeneroID))
+                .ToList();
+
+            jogoBanco.Genero.Clear();
+
+            foreach(var genero in generos)
+            {
+                jogoBanco.Genero.Add(genero);
+            }
+
+            _context.SaveChanges(); 
+
         }
 
         public void Remover(int id)
