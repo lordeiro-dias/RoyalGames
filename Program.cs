@@ -58,6 +58,10 @@ builder.Services.AddScoped<JogoService>();
 builder.Services.AddScoped<IGeneroRepository, GeneroRepository>();
 builder.Services.AddScoped<GeneroService>();
 
+// plataforma
+builder.Services.AddScoped<IPlataformaRepository, PlataformaRepository>();
+builder.Services.AddScoped<PlataformaService>();
+
 // JWT
 builder.Services.AddScoped<GeradorTokenJWT>();
 builder.Services.AddScoped<AutenticacaoService>();
