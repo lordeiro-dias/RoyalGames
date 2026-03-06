@@ -197,8 +197,34 @@
   },
   {
     "ContainingType": "RoyalGames.Controllers.JogoController",
+    "Method": "ObterPorId",
+    "RelativePath": "api/Jogo/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "RoyalGames.DTOs.JogoDto.LerJogoDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "RoyalGames.Controllers.JogoController",
     "Method": "Atualizar",
-    "RelativePath": "api/Jogo",
+    "RelativePath": "api/Jogo/{id}",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
@@ -206,7 +232,7 @@
       {
         "Name": "id",
         "Type": "System.Int32",
-        "IsRequired": false
+        "IsRequired": true
       },
       {
         "Name": "Nome",
@@ -253,32 +279,6 @@
   },
   {
     "ContainingType": "RoyalGames.Controllers.JogoController",
-    "Method": "ObterPorId",
-    "RelativePath": "api/Jogo/{id}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "RoyalGames.DTOs.JogoDto.LerJogoDto",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "RoyalGames.Controllers.JogoController",
     "Method": "Remover",
     "RelativePath": "api/Jogo/{id}",
     "HttpMethod": "DELETE",
@@ -297,6 +297,32 @@
     "ContainingType": "RoyalGames.Controllers.JogoController",
     "Method": "ObterImagem",
     "RelativePath": "api/Jogo/{id}/imagem",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "RoyalGames.Controllers.LogJogoController",
+    "Method": "Listar",
+    "RelativePath": "api/LogJogo",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "RoyalGames.Controllers.LogJogoController",
+    "Method": "ListarPorJogo",
+    "RelativePath": "api/LogJogo/jogo/{id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,

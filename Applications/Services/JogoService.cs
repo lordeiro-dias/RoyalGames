@@ -175,7 +175,7 @@ namespace RoyalGames.Applications.Services
                 throw new DomainException("Jogo não encontrado");
             }
 
-            _repository.ObterPorId(id);
+            _repository.Remover(id);
         }
     }
 }
