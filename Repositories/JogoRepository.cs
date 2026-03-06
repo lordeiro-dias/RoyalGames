@@ -19,6 +19,7 @@ namespace RoyalGames.Repositories
             List<Jogo> jogos = _context.Jogo
                 .Include(jogo => jogo.Plataforma) // busca jogos, e para cada jogo, traz as suas plataformas
                 .Include(jogo => jogo.Genero) // busca jogos, e para cada jogo, traz as seus generos
+                .Include(jogo => jogo.Usuario) // busca jogos, e para cada jogo, traz as seu Usuario
                 .Include(jogo => jogo.ClassificacaoIndicativa) // busca jogos e para cada jogo, traz a sua class. indicativa
                 .ToList();
 
@@ -29,6 +30,7 @@ namespace RoyalGames.Repositories
         {
             Jogo? jogo = _context.Jogo.Include(jogoDb => jogoDb.Plataforma).Include(jogoDb => jogoDb.Genero).Include(jogoDb => jogoDb.ClassificacaoIndicativa)
                 .Include(jogoDb => jogoDb.StatusJogo)
+                .Include(jogo => jogo.Usuario)
                 .FirstOrDefault(jogoDb => jogoDb.JogoID == id);
 
             return jogo;

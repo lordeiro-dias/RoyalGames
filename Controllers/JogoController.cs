@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RoyalGames.Applications.Services;
 using RoyalGames.DTOs.JogoDto;
 using RoyalGames.Exceptions;
+using System.Security.Claims;
 
 namespace RoyalGames.Controllers
 {
@@ -15,6 +17,18 @@ namespace RoyalGames.Controllers
         public JogoController(JogoService service)
         {
             _service = service;
+        }
+
+        private int ObterUsuarioIdLogado()
+        {
+            string? idTexto = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if(string.IsNullOrWhiteSpace(idTexto))
+            {
+                throw new DomainException("Usuário não encontrado");
+            }
+
+            return int.Parse(idTexto);
         }
 
         [HttpGet]
@@ -55,12 +69,12 @@ namespace RoyalGames.Controllers
 
         [HttpPost]
         [Consumes("multipart/form-data")]
-        //[Authorize]
+        [Authorize]
         public ActionResult Adicionar([FromForm] CriarJogoDto jogoDto)
         {
             try
             {
-                int usuarioId = 1; // ALTERAR DEPOIS COM A AUTENTICAÇÃO
+                int usuarioId = ObterUsuarioIdLogado();
 
                 _service.Adicionar(jogoDto, usuarioId);
                 return StatusCode(201);
@@ -71,9 +85,9 @@ namespace RoyalGames.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [Consumes("multipart/form-data")]
-        //[Authorize]
+        [Authorize]
 
         public ActionResult Atualizar(int id, [FromForm] AtualizarJogoDto jogoDto)
         {
@@ -89,7 +103,7 @@ namespace RoyalGames.Controllers
         }
 
         [HttpDelete("{id}")]
-        //[Authorize]
+        [Authorize]
 
         public ActionResult Remover(int id)
         {
